@@ -8,10 +8,19 @@ public class CameraMovement : MonoBehaviour
     /* Chứa hàm di chuyển camera tới int floor
      * Chứa hàm di chuyển camera tới floor tiếp theo/floor trước đó
      */
-    public Camera cam;
     public int floor;
     public GameObject cellPrefabs;
     public TextMeshProUGUI floorText;
+    public GameObject nextButton, lastButton;
+
+    private Camera cam;
+    private FloorSpawner floorSpawner;
+
+    private void Awake()
+    {
+        floorSpawner = GetComponent<FloorSpawner>();
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+    }
     public void MoveCameraToFloor()
     {
         StartCoroutine(MoveCameraToFloorDelayed());
@@ -29,6 +38,7 @@ public class CameraMovement : MonoBehaviour
         cam.orthographicSize = cellScale * constraintCount / 1.5f;
 
         floorText.text = $"Floor {floor}";
+        HideNextAndLastButton();
     }
     public void MoveToNextFloor()
     {
@@ -39,5 +49,12 @@ public class CameraMovement : MonoBehaviour
     {
         floor -= 1;
         MoveCameraToFloor();
+    }
+    public void HideNextAndLastButton()
+    {
+        if (floor == floorSpawner.maxFloor) { nextButton.SetActive(false); }
+        else { nextButton.SetActive(true); }
+        if (floor == 1) { lastButton.SetActive(false); }
+        else { lastButton.SetActive(true); }
     }
 }

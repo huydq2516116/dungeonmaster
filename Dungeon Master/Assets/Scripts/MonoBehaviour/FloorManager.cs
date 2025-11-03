@@ -6,14 +6,19 @@ using System.Linq;
 
 public class FloorManager : MonoBehaviour
 {
-    /* Tạo các cell đầu tiên ngay khi floor được khởi tạo
+    /* Tạo các cell đầu tiên ngay khi floor được khởi tạo (Nếu cell(1,1) chuyển thành Unlockable, không thì giữ cell)
+     * Chứa hàm Expand This Floor, mỗi lần expand thì sortchild -> Giữ nguyên vị trí cell
+     * Chứa hàm kiểm tra cell Unlockable 
      */
     public GameObject cellPrefabs;
-    public GridLayoutGroup glg;
     public Sprite unlockableLockSprite;
     public List<GameObject> cellObjects;
 
-
+    private GridLayoutGroup glg;
+    private void Awake()
+    {
+        glg = GetComponent<GridLayoutGroup>();
+    }
     private void Start()
     {
         cellObjects = new();
@@ -27,9 +32,7 @@ public class FloorManager : MonoBehaviour
                 if (i == 1 && j == 1)
                 {
                     CellController cellController = cell.GetComponent<CellController>();
-                    cellController.cellState = CellController.CellState.Unlockable;
-                    Image buttonImage = cell.transform.GetChild(0).GetComponent<Image>();
-                    buttonImage.sprite = unlockableLockSprite;
+                    cellController.CellBecomeUnlockable();
                 }
                 cellObjects.Add(cell);
             }
@@ -70,19 +73,30 @@ public class FloorManager : MonoBehaviour
         {
             int currentRow = Mathf.FloorToInt(i/rowNum) + 1;
             int currentMinRow = rowNum * (currentRow - 1);
-            int currentMaxRow = rowNum * (currentRow + 1) - 1;
-            int c1 = Mathf.CeilToInt(Mathf.Clamp(i - 1, currentMinRow, currentMaxRow));
-            int c2 = Mathf.FloorToInt(Mathf.Clamp(i + 1, currentMinRow, currentMaxRow));
+            int currentMaxRow = rowNum * currentRow - 1;
+            int c1 = Mathf.Clamp(i - 1, currentMinRow, currentMaxRow);
+            int c2 = Mathf.Clamp(i + 1, currentMinRow, currentMaxRow);
 
             int currentColumn = (i % rowNum) + 1;
             int currentMinColumn =currentColumn - 1;
             int currentMaxColumn = rowNum * (rowNum - 1) + (currentColumn - 1);
+            int c3 = Mathf.Clamp(i - rowNum, currentMinColumn, currentMaxColumn);
+            int c4 = Mathf.Clamp(i+rowNum, currentMinColumn, currentMaxColumn);
 
             GameObject cell = cellObjects[i];
+            CellController cell1 = cellObjects[c1].GetComponent<CellController>();
+            CellController cell2 = cellObjects[c2].GetComponent<CellController>();
+            CellController cell3 = cellObjects[c3].GetComponent<CellController>();
+            CellController cell4 = cellObjects[c4].GetComponent<CellController>();
+            
             CellController cc = cell.GetComponent<CellController>();
             if (cc.cellState == CellController.CellState.Locked)
             {
-                
+                if (!cell1.IsLocked() || !cell2.IsLocked() || !cell3.IsLocked() || !cell4.IsLocked())
+                {
+                    cc.cellState = CellController.CellState.Unlockable;
+                    cc.CellBecomeUnlockable();
+                }
             }
         }
     }

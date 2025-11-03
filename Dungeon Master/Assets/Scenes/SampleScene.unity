@@ -1424,10 +1424,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccb96e979984241468a89dda8bd49369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  cam: {fileID: 519420031}
   floor: 0
   cellPrefabs: {fileID: 5442843240441181139, guid: dd3945196b2a2b646a66d5d31e1f73ff, type: 3}
   floorText: {fileID: 1919978303}
+  nextButton: {fileID: 172212738}
+  lastButton: {fileID: 99783023}
 --- !u!114 &2004819537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1442,7 +1443,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   maxFloor: 0
   floorPrefabs: {fileID: 3993597454852102618, guid: 5379da404bf396845adb0835c2e69dd7, type: 3}
-  cameraMovement: {fileID: 2004819536}
   floorObjects: []
 --- !u!1 &2079247745
 GameObject:

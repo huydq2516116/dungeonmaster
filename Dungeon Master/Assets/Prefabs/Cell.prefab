@@ -82,6 +82,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   cellState: 0
+  unlockableLockSprite: {fileID: 21300000, guid: 992d9ae7825d59840bbcfb79ca609626, type: 3}
+  buttonImage: {fileID: 876897649405235930}
 --- !u!222 &4742157356984390586
 CanvasRenderer:
   m_ObjectHideFlags: 0

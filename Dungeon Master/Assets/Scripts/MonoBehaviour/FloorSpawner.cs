@@ -3,21 +3,25 @@ using TMPro;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 
 public class FloorSpawner : MonoBehaviour
 {
     /* Chứa dòng code tạo floor tiếp theo và giữ chỉ số maxFloor
-     * Chứa code expand floor
+     * Chứa code expand floor dựa trên expandThisFloor từ FloorManager.cs
      * Có khả năng thay đổi int floor từ CameraMovement.cs
      */
     public int maxFloor;
     public GameObject floorPrefabs;
-    public CameraMovement cameraMovement;
-    public List<GameObject> floorObjects;
+    
+    [SerializeField] List<GameObject> floorObjects;
+
+    private CameraMovement cameraMovement;
 
     private void Awake()
     {
+        cameraMovement = GetComponent<CameraMovement>();
         maxFloor = 0; 
     }
     private void Start()
@@ -43,5 +47,6 @@ public class FloorSpawner : MonoBehaviour
         floorManager.ExpandThisFloor();
         cameraMovement.MoveCameraToFloor();
     }
+    
 
 }
